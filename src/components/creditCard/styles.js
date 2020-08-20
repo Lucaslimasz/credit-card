@@ -17,13 +17,58 @@ export const ContainerCard = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .backgroundF {
+    transition: background 1.5s;
+
+    &.others {
+      background: black;
+    }
+    &.visa {
+      background: #901dbe;
+    }
+    &.master {
+      background: #ff5100;
+    }
+    &.hiper {
+      background: blue;
+    }
+  }
+  .backgroundB {
+    transition: background 1.5s;
+
+    &.others {
+      background: #cdcdcd;
+    }
+    &.visa {
+      background: #64028c;
+    }
+    &.master {
+      background: #cc4100;
+    }
+    &.hiper {
+      background: #0000c9;
+    }
+  }
+
+  transform: rotateY(0deg);
+    transition: transform 1.5s;
+    transform-style: preserve-3d;
+  &:hover {
+    transform: rotateY(180deg);
+    transition: transform 1.5s;
+    transform-style: preserve-3d;
+  }
+  position: relative;
+  > div {
+    position: absolute;
+  }
 `;
 
-export const Card = styled.div`
+export const CardFront = styled.div`
   width: 340px;
   height: 180px;
   padding: 25px;
-  background: blue;
   border-radius: 20px;
 
   display: flex;
@@ -37,6 +82,11 @@ export const Top = styled.div`
   height: 20%;
   display: flex;
   justify-content: space-between;
+
+  > img {
+    width: 50px;
+    height: auto;
+  }
 `;
 
 export const Middle = styled.div`
@@ -81,6 +131,38 @@ export const Valid = styled.div`
   }
 `;
 
+export const CardBack = styled.div`
+  width: 390px;
+  height: 230px;
+  border-radius: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transform: rotateY(180deg);
+`;
+export const Sensor = styled.div`
+  width: 100%;
+  height: 50px;
+  background: black;
+  margin-top: 35px;
+`;
+export const CodCVV = styled.div`
+  width: 235px;
+  height: 30px;
+  background: #fff;
+  position: relative;
+  top: 10px;
+  left: -65px;
+  color: black;
+  > b {
+    position: relative;
+    top: 8px;
+    left: 80%;
+  }
+`;
+
 export const ContainerInput = styled.div`
   width: 400px;
   height: 50vh;
@@ -98,6 +180,11 @@ export const InputN = styled.input`
   padding: 10px;
   margin: 5px;
   font-size: 17px;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
 `;
 
 export const ContainerBot = styled.div`
@@ -108,18 +195,30 @@ export const ContainerBot = styled.div`
 
 export const InputDate = styled.input`
   width: 60%;
-  
+
   height: 20px;
   padding: 10px;
   margin: 5px;
   font-size: 17px;
 `;
 
-export const InputCVC = styled.input`
+export const InputCVV = styled.input`
   width: 40%;
-  
+
   height: 20px;
   padding: 10px;
   margin: 5px;
   font-size: 17px;
+
+  transform: rotateY(0deg);
+  transition: transform 1.5s;
+  transform-style: preserve-3d;
+
+  &:focus ~ .ContainerCard {
+    transform: rotateY(10deg);
+    transition: transform 1.5s;
+    transform-style: preserve-3d;
+  }
 `;
+
+

@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+
+import Moment from "moment";
 
 import {
   Container,
   ContainerCard,
   ContainerInput,
-  Card,
+  CardFront,
   Top,
   Middle,
   Bot,
@@ -14,87 +16,129 @@ import {
   InputN,
   InputDate,
   ContainerBot,
-  InputCVC,
+  InputCVV,
+  CardBack,
+  Sensor,
+  CodCVV,
 } from "./styles";
-import { render } from "@testing-library/react";
 
-class CreditCard extends React.Component {
-  // const [number, setNumber] = useState("···· ···· ···· ····");
-  // const [name, setName] = useState("NOME SOBRENOME");
-  // const [date, setDate] = useState("--/--");
+import Visa from "../cards/visa";
+import Master from "../cards/master";
+import Hiper from "../cards/hiper";
 
-  // function handleNumber(e){
-  //   e.preventDefault();
+function CreditCard() {
+  const [number, setNumber] = useState("···· ···· ···· ····");
+  const [name, setName] = useState("Nome Sobrenome");
+  const [date, setDate] = useState("0000000");
+  const [flag, setFlag] = useState();
+  const [cvv, setCvv] = useState();
+  const [ effect, setEffect ] = useState();
+  const [background, setBackground] = useState("others");
 
-  //   setNumber({
-  //     number: e.target.value
-  //   });
-  // }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      number: "···· ···· ···· ····",
-      name: "NOME SOBRENOME",
-      date: "--/--",
-    };
-  }
-
-  handleNumber = (e) => {
+  function handleNumber(e) {
     e.preventDefault();
 
-    this.setState({
-      number: e.target.value,
-    });
-  };
+    setNumber(e.target.value);
 
-  render() {
-    const { number, name, date } = this.state;
+    const validation = number.substring(0, 4);
 
-    return (
-      <>
-        <Container>
-          <ContainerCard>
-            <Card>
-              <Top>
-                <Chip />
-
-                <h1>VISA</h1>
-              </Top>
-
-              <Middle>
-                <Numeration>
-                  <p>{number}</p>
-                </Numeration>
-              </Middle>
-
-              <Bot>
-                <p>{name}</p>
-                <Valid>
-                  <a>Data de Validade</a>
-                  <p>{date}</p>
-                </Valid>
-              </Bot>
-            </Card>
-          </ContainerCard>
-
-          <ContainerInput>
-            <InputN
-              placeholder="Número do cartão"
-              onChange={this.handleNumber}
-              maxLength={16}
-            />
-            <InputN placeholder="Nome e Sobrenome" maxLength={16} />
-
-            <ContainerBot>
-              <InputDate placeholder="Data" />
-              <InputCVC placeholder="CVC" />
-            </ContainerBot>
-          </ContainerInput>
-        </Container>
-      </>
-    );
+    switch (validation) {
+      case "4051":
+        return visa();
+      case "5522":
+        return master();
+      case "9503":
+        return hiper();
+      default:
+        return null;
+    }
   }
+
+  function visa() {
+    setFlag(<Visa />);
+    setBackground("visa");
+  }
+
+  function master() {
+    setFlag(<Master />);
+    setBackground("master");
+  }
+
+  function hiper() {
+    setFlag(<Hiper />);
+    setBackground("hiper");
+  }
+
+  // function activeRotate(){
+  //   setEffect(!effect);
+  //   if(effect == true){
+  //     alert('VERDADE!!!')
+  //   }
+  //   else{
+  //     alert('FALSE')
+  //   }
+  // }
+
+  return (
+    <>
+      <Container className="ContainerCard">
+        <ContainerCard >
+          <CardBack className={`backgroundB ${background}`}>
+            <Sensor></Sensor>
+
+            <CodCVV>
+              <b>{cvv}</b>
+            </CodCVV>
+          </CardBack>
+          <CardFront className={`backgroundF ${background}`}>
+            <Top>
+              <Chip />
+              {flag}
+            </Top>
+
+            <Middle>
+              <Numeration>
+                <p>{number}</p>
+              </Numeration>
+            </Middle>
+
+            <Bot>
+              <p>{name}</p>
+              <Valid>
+                <a>Data de Validade</a>
+                <p>{Moment(date).format("MM YYYY")}</p>
+              </Valid>
+            </Bot>
+          </CardFront>
+        </ContainerCard>
+
+        <ContainerInput>
+          <InputN
+            placeholder="Número do cartão"
+            onChange={handleNumber}
+            maxLength={16}
+            pattern="[0-9]*"
+            type="text"
+          />
+          <InputN
+            placeholder="Nome e Sobrenome"
+            onChange={(e) => setName(e.target.value)}
+            maxLength={16}
+          />
+
+          <ContainerBot>
+            <InputDate type="month" onChange={(e) => setDate(e.target.value)} />
+            <InputCVV
+              placeholder="CVC"
+              maxLength={3}
+              onChange={(e) => setCvv(e.target.value)}
+              // onClick={activeRotate}
+            />
+          </ContainerBot>
+        </ContainerInput>
+      </Container>
+    </>
+  );
 }
 
 export default CreditCard;
