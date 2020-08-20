@@ -4,7 +4,6 @@
 
 # Credit-Card com reactJS
 
-> backend do **Proffy Application** desenvolvido na NWL #02 da RocketSeat, em homenagem aos professores!
 > Desenvolvimento do **Credit-Card**, identificando a cor do cartão e a bandeira pelo número || simulator
 
 ### 📄 O que foi usado:
